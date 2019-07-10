@@ -20,5 +20,4 @@ const ImovelSchema = mongoose.Schema({
 }, {
     timestamps: true
 });
-
 module.exports = mongoose.model('Imovel', ImovelSchema);
