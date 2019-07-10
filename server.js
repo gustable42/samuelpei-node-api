@@ -26,7 +26,6 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
-
 require('./app/routes/imoveis.routes.js')(app);
 
 // listen for requests
