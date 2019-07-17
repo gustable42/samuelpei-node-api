@@ -1,6 +1,7 @@
 module.exports = (app) => {
     const imoveis = require('../controllers/imoveis.controller.js');
     const corretores = require('../controllers/corretores.controller.js');
+    const clientes = require('../controllers/clientes.controller.js');
 
     // Imoveis
     app.post('/imoveis', imoveis.create);
@@ -15,4 +16,11 @@ module.exports = (app) => {
      app.get('/corretores/:id', corretores.findOne);
      app.put('/corretores/:id', corretores.update);
      app.delete('/corretores/:id', corretores.delete);
+
+     // Clientes
+     app.post('/clientes', clientes.create);
+     app.get('/clientes', clientes.findAll);
+     app.get('/clientes/:id', clientes.findOne);
+     app.put('/clientes/:id', clientes.update);
+     app.delete('/clientes/:id', clientes.delete);
 }
