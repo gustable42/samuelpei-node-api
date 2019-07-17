@@ -1,18 +1,18 @@
 module.exports = (app) => {
     const imoveis = require('../controllers/imoveis.controller.js');
+    const corretores = require('../controllers/corretores.controller.js');
 
-    // Create a new imoveis
+    // Imoveis
     app.post('/imoveis', imoveis.create);
-
-    // Retrieve all imoveis
     app.get('/imoveis', imoveis.findAll);
-
-    // Retrieve a single imoveis with id
     app.get('/imoveis/:id', imoveis.findOne);
-
-    // Update a imoveis with id
     app.put('/imoveis/:id', imoveis.update);
-
-    // Delete a imoveis with id
     app.delete('/imoveis/:id', imoveis.delete);
+
+     // Corretores
+     app.post('/corretores', corretores.create);
+     app.get('/corretores', corretores.findAll);
+     app.get('/corretores/:id', corretores.findOne);
+     app.put('/corretores/:id', corretores.update);
+     app.delete('/corretores/:id', corretores.delete);
 }

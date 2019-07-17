@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ImovelSchema = mongoose.Schema({
     titulo: String,
@@ -16,7 +17,9 @@ const ImovelSchema = mongoose.Schema({
     interfone: Boolean,
     piscina: Boolean,
     areaDeLazer: Boolean,
-    dce: Boolean
+    dce: Boolean,
+
+    idCaptadores: [ObjectId]
 }, {
     timestamps: true
 });

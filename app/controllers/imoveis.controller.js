@@ -29,8 +29,10 @@ exports.create = (req, res) => {
         return res.status(400).send({message: "areaDeLazer não pode estar vazio"});
     if(!req.body.dce)
         return res.status(400).send({message: "dce não pode estar vazio"});
+    if(!req.body.idCaptadores)
+        return res.status(400).send({message: "idCaptadores não pode estar vazio"});
 
-    // Create a Note
+    // Create a Imovel
     const imovel = new Imovel({
         titulo: req.body.titulo, 
         idProprietario: req.body.idProprietario,
@@ -44,13 +46,14 @@ exports.create = (req, res) => {
         interfone: req.body.interfone, 
         piscina: req.body.piscina, 
         areaDeLazer: req.body.areaDeLazer, 
-        dce: req.body.dce
+        dce: req.body.dce,
+        idCaptadores: req.body.idCaptadores
     });
 
-    // Save Note in the database
+    // Save Imovel in the database
     imovel.save()
     .then(data => {
-        res.send(data);
+        res.status(200).send(data);
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Algum erro ocorreu ao salvar o novo imóvel."
@@ -62,7 +65,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     Imovel.find()
     .then(imoveis => {
-        res.send(imoveis);
+        res.status(200).send(imoveis);
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Algum erro ocorreu ao buscar por imóveis."
@@ -79,7 +82,7 @@ exports.findOne = (req, res) => {
                 message: "Imóvel não encontado com id=" + req.params.id
             });            
         }
-        res.send(imovel);
+        res.status(200).send(imovel);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -94,8 +97,6 @@ exports.findOne = (req, res) => {
 
 // Update an Imovel identified by the id in the request
 exports.update = (req, res) => {
-
-
     // Find imovel and update it with the request body
     Imovel.findByIdAndUpdate(req.params.id, req.body, {new: true})
     .then(imovel => {
@@ -104,7 +105,7 @@ exports.update = (req, res) => {
                 message: "Imovel not found with id " + req.params.id
             });
         }
-        res.send(imovel);
+        res.status(200).send(imovel);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -126,15 +127,15 @@ exports.delete = (req, res) => {
                 message: "Imovel not found with id " + req.params.id
             });
         }
-        res.send({message: "Imovel deleted successfully!"});
+        res.status(200).send({message: "Imovel deleted successfully!"});
     }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
-                message: "Note not found with id " + req.params.id
+                message: "Corretor not found with id " + req.params.id
             });                
         }
         return res.status(500).send({
-            message: "Could not delete note with id " + req.params.id
+            message: "Could not delete corretor with id " + req.params.id
         });
     });
 };
