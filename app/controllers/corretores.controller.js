@@ -1,8 +1,9 @@
 const Corretor = require('../models/corretores.model.js');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Create and Save a new Corretor
-exports.create = (req, res) => {
+exports.signup = (req, res) => {
     // Validate request
     if(!req.body.email)
         return res.status(400).send({message: "Email não pode estar vazio"});
@@ -58,6 +59,50 @@ exports.create = (req, res) => {
             });
         }
     })
+};
+
+exports.login = (req, res) => {
+    Corretor.find({ email: req.body.email })
+    .exec()
+    .then(corretor => {
+      if (corretor.length < 1) {
+        return res.status(401).json({
+          message: "Falha na autenticação"
+        });
+      }
+      bcrypt.compare(req.body.password, corretor[0].password, (err, result) => {
+        if (err) {
+          return res.status(401).json({
+            message: "Falha na autenticação"
+          });
+        }
+        if (result) {
+          const token = jwt.sign(
+            {
+              email: corretor[0].email,
+              corretorId: corretor[0]._id
+            },
+            "secret",
+            {
+                expiresIn: "1h"
+            }
+          );
+          return res.status(200).json({
+            message: "Autenticação realizada",
+            token: token
+          });
+        }
+        res.status(401).json({
+          message: "Falha na autenticação"
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
 };
 
 // Retrieve and return all Corretores from the database.
